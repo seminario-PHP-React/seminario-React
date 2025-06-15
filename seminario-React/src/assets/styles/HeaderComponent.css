@@ -1,0 +1,14 @@
+/* src/assets/styles/HeaderComponent.css */
+.header {
+  background-color: #eee;
+  padding: 10px;
+  cursor: pointer;
+}
+.header-content {
+  display: flex;
+  align-items: center;
+}
+.logo {
+  width: 40px;
+  margin-right: 10px;
+}

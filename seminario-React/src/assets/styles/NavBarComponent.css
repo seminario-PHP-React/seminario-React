@@ -1,0 +1,13 @@
+/* src/assets/styles/NavBarComponent.css */
+.navbar {
+  background-color: #ccc;
+  padding: 10px;
+}
+.navbar ul {
+  display: flex;
+  list-style: none;
+  gap: 15px;
+}
+.navbar a {
+  text-decoration: none;
+}
