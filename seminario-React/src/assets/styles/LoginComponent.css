@@ -1,0 +1,151 @@
+/* LoginComponent.css*/
+
+/*-------------------------------------------
+--------------Fondo de login ----------------
+--------------------------------------------*/
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+            url('../assets/images/fondo-login3.png') center/cover no-repeat;
+  background-size:contain;
+  background-repeat:repeat;
+  min-height: 100vh;
+  display: flex;
+  justify-content:center;
+  align-items: center;
+}
+
+
+/*-------------------------------------------------------
+/* Título: Iniciar sesión */
+.login-form-side h2 {
+  margin-top: 50px;
+  font-size: 2.5rem;
+  font-weight: bold;
+  /*font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
+  font-family: 'Press Start 2P',ahoma, Geneva, Verdana, sans-serif;
+  margin-bottom: 0.1rem;
+}
+
+/* placeholder (texto gris) -> ingreso de datos */
+.input-group input::placeholder {
+  font-size: 1.5rem;
+  color: #888;
+}
+/*------------------------------------------------------------------*/
+
+/*-----------------------------------------------
+ -----campos donde usuario ingresa sus datos ----
+ ------------------------------------------------*/
+.input-group input {
+  margin-top: 10px;
+  padding: 0.75rem 2rem;
+  border: 2px solid #66b17a;
+  border-radius: 10px;
+  font-size: 1.5rem; /* tamaño letra */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+  color: #333333; /* color letra*/
+}
+
+/* al posicionarse en un campo */
+.input-group input:focus {
+  border: 2px solid #66c27d;
+  background-color: #eafff0;
+  outline: none;
+}
+
+
+/*-----------------------------------------------
+------------ Boton de iniciar sesion ------------
+------------------------------------------------*/
+.input-group {
+  margin-bottom: 4rem; /* mas arriba o mas abajo*/
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* botón de iniciar sesión */
+button {
+  background-color: #66c27d;
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  font-size: 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* al posicionarse sobre el botón */
+button:hover {
+  background-color: #b1d2bc;
+}
+/*------------------------------------------------*/
+
+
+
+/*------------------------------------------------
+------------No tenes cuenta? Registrate-----------
+------------------------------------------------*/
+/* No tenes cuenta?*/
+.link-group {
+  margin-top: 5rem;
+  /*margin-bottom: 10px;*/
+  font-size: 1.3rem;
+  text-align:left;
+  color: #666;
+}
+
+/* Registrate */
+.link-group a {
+  color: #3b4cca;
+  text-decoration: none;
+  margin-left: 0.5rem;
+}
+
+
+/* ---------------------------------------------------
+--------------- Formulario de login ------------------
+------------- configuración ventana ------------------
+------------ donde se ingresan los datos -------------
+-----------------------------------------------------*/
+.login-form-side {
+  width: 50%;
+  flex: 1;
+  padding: 3rem;
+  background: white; 
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap:4rem;
+}
+/*----------------------------------------------------*/
+
+/*-----------------------------------------------------
+----- configuración de imagen columna de pokemones ----
+------------------------------------------------.....*/
+.login-image-side {
+  width: 50%;
+  flex: 1;
+  background: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.login-image-side img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+/*------------------------------------------------*/
+
+
+
+/*------------------------------------------------
+------------Ingreso de datos -----------
+------------------------------------------------*/
+
