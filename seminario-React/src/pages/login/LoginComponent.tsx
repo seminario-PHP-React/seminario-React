@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { saveAuthData } from '../utils/auth';
-import '../assets/styles/LoginComponent.css';
+import { saveAuthData } from '../../utils/auth';
+import '../../assets/styles/LoginComponent.css';
 
 const LoginPage: React.FC = () => {
     

@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavBarComponent from './components/NavBarComponent';
-import LoginComponent from './components/LoginComponent';
+import LoginComponent from './pages/login/LoginComponent';
 
 
 const App: React.FC = () => {
