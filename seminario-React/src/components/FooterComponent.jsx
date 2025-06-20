@@ -1,11 +1,12 @@
 // src/assets/styles/FooterComponent.jsx
 import React from 'react';
-import './FooterComponent.css';
+// Archivo que contiene los nombres de integrantes del grupo y año de curso
+
 
 const FooterComponent = () => {
   return (
     <footer className="footer">
-      <p>Nombre Apellido 1 - Nombre Apellido 2 | 2025</p>
+      <p>Juana Zabaleta - Dolores Garro | 2025</p>
     </footer>
   );
 };
