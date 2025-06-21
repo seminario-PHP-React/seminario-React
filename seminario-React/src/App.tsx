@@ -1,7 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavBarComponent from './components/NavBarComponent';
+
+import RegistroPage from './pages/registro/RegistroPage';
 import LoginComponent from './pages/login/LoginComponent';
+
 
 
 const App: React.FC = () => {
@@ -13,6 +16,7 @@ const App: React.FC = () => {
 
         <Routes> 
           <Route path="/" element={<div>Página de Inicio</div>} />
+          <Route path="/registro" element={<RegistroPage />} />
           <Route path="/login" element={<LoginComponent />} />
           <Route path="/mis-mazos" element={<div>Mis Mazos</div>} />
           <Route path="/editar-usuario" element={<div>Editar Usuario</div>} />
