@@ -8,6 +8,8 @@ const RegistroPage = () => {
   const [password, setPassword] = useState('');
   const [errores, setErrores] = useState<string[]>([]);
   const [mensaje, setMensaje] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
 
   const validarCampos = async () => {
     const erroresValidacion: string[] = [];
@@ -43,6 +45,12 @@ const RegistroPage = () => {
     if (!/[^A-Za-z0-9]/.test(password)) {
       erroresValidacion.push("La contraseña debe contener al menos un carácter especial.");
     }
+
+    // Confirmar contraseña
+    if (confirmPassword !== password) {
+      erroresValidacion.push("Las contraseñas no coinciden.");
+    }
+
 
     // Verificar si el usuario ya existe (si se cumplio todo lo anterior)
     if (erroresValidacion.length === 0) {
@@ -120,6 +128,13 @@ const RegistroPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <input
+          type="password"
+          placeholder="Confirmar contraseña"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+
         <button type="submit">Registrarse</button>
       </form>
 
