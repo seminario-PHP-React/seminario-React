@@ -81,7 +81,7 @@ const RegistroPage = () => {
       setUsuario('');
       setPassword('');
     } catch (error: any) {
-        console.error("ERROR COMPLETO:", error); // 👈 esto te lo imprime en consola
+        console.error("ERROR COMPLETO:", error); 
         const mensaje =
             error.response?.data?.Mensaje ||
             error.response?.data?.error ||
@@ -93,12 +93,18 @@ const RegistroPage = () => {
   };
 
   return (
+  <div className="registro-page">
+    <div className="registro-image-side">
+      <img src="/ruta/imagen-pokemon.png" alt="Imagen" />
+    </div>
+
     <div className="registro-container">
       <h2>Registro de Usuario</h2>
-      <form onSubmit={handleSubmit} className="registro-form">
+
+      <form onSubmit={handleSubmit} className="input-group">
         <input
           type="text"
-          placeholder="Nombre del usuario"
+          placeholder="Nombre completo"
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
         />
@@ -124,8 +130,13 @@ const RegistroPage = () => {
       )}
 
       {mensaje && <p className="mensaje-ok">{mensaje}</p>}
+
+      <div className="link-group">
+        ¿Ya tenés cuenta? <a href="/login">Iniciar sesión</a>
+      </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default RegistroPage;
