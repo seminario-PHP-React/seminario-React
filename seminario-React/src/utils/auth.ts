@@ -1,6 +1,7 @@
-export const saveAuthData = (token: string, userName: string): void => {
+export const saveAuthData = (token: string, id:number, userName: string): void => {
   localStorage.setItem('token', token);
   localStorage.setItem('userName', userName);
+  localStorage.setItem('usuario', JSON.stringify({ token, id }));
 };
 
 

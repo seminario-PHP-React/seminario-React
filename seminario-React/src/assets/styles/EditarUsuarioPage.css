@@ -1,0 +1,76 @@
+/* EditarUsuarioPage.css  */
+
+.editar-usuario-container {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(5px);
+  padding: 2.5rem;
+  border-radius: 24px;
+  max-width: 420px;     /* ancho */
+  width: 100%;          /* ancho */
+  height: auto;         /* alto --> se ajusta al contenido (para cuando muestra errores) */
+  max-height: 90vh;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+}
+
+/* efecto de la ventana*/
+.editar-usuario-container:hover {
+  transform: scale(1.01);
+}
+
+/* Título "Editar Usuario "*/
+.editar-usuario-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* datos que ingresa usuario */
+.input-group input {
+  display: block;
+  width: 93%;
+  margin-bottom: 0.2rem;  /* espacio entre casillas */
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #1e6343;
+  font-size: 1.2rem;      /* tamaño letra input*/
+}
+
+/* datos que ve el usuario --> "Nombre de usuario", "Contraseña actual", etc */
+.input-group input::placeholder {
+  font-size: 1.4rem; 
+  color: #666;     
+}
+
+/* Guardar cambios */
+.input-group button {
+  width: 100%;
+  padding: 0.7rem;
+  background-color: #449c70;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+
+.input-group button:hover {
+  background-color: #88b9ad;
+}
+
+.errores {
+  color: #e74c3c;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.mensaje-ok {
+  color: #27ae60;
+  font-size: 0.95rem;
+  margin-top: 1rem;
+}
+
