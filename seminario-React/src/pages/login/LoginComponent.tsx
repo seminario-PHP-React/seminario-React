@@ -37,7 +37,7 @@ const LoginPage: React.FC = () => {
 
       if (response.ok) {                         // Si esta bien la guardo en el buffer o localstorage del navegador 
         const nombreReal = data.Mensaje?.replace('Bienvenido ', '') ?? nombre;
-        saveAuthData(data.Token, nombreReal);        // Importante la T mayuscula porq asi esta en el back 
+        saveAuthData(data.Token, data.id ,nombreReal);        // Importante la T mayuscula porq asi esta en el back 
         window.location.href = '/mis-mazos';     // al loguearse ya puede ver su info
       } else {
         alert(data.Mensaje || 'Error al iniciar sesión');
