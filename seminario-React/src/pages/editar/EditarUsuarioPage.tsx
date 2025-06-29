@@ -104,7 +104,8 @@ const EditarUsuarioPage = () => {
   };
 
   return (
-    <div className="editar-usuario-page">
+    <div className="editar-usuario-bg">
+      <img src="/assets/images/arcoiris.jpg" alt="Arcoiris" className="editar-arcoiris-img" />
       <div className="editar-usuario-container">
         <h2>Editar Usuario</h2>
 
