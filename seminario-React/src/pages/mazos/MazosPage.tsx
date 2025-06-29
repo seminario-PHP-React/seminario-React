@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../../assets/styles/MazosPage.css';
 
 const MazosPage: React.FC = () => {
@@ -15,6 +16,7 @@ const [cartasDelMazo, setCartasDelMazo] = useState<any[]>([]);
 const [confirmarEliminar, setConfirmarEliminar] = useState(false);
 const [editando, setEditando] = useState(false);
 const [nuevoNombre, setNuevoNombre] = useState('');
+const navigate = useNavigate();
 
 const obtenerMazos = async () => {
     setCargando(true);
@@ -175,6 +177,7 @@ const obtenerMazos = async () => {
                   <button
                     className="mazos-accion-btn"
                     disabled={!mazoSeleccionado}
+                    onClick={() => mazoSeleccionado && navigate(`/jugar/${mazoSeleccionado}`)}
                   >
                     Jugar
                   </button>

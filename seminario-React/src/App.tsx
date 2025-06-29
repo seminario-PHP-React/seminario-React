@@ -6,6 +6,7 @@ import RegistroPage from './pages/registro/RegistroPage';
 import LoginComponent from './pages/login/LoginComponent';
 import EditarUsuarioPage from './pages/editar/EditarUsuarioPage';
 import MazosPage from './pages/mazos/MazosPage';
+import JugarPage from './pages/mazos/JugarPage';
 
 
 
@@ -22,6 +23,7 @@ const App: React.FC = () => {
           <Route path="/login" element={<LoginComponent />} />
           <Route path="/editar-usuario" element={<EditarUsuarioPage />} />
           <Route path="/mis-mazos" element={<MazosPage />} />
+          <Route path="/jugar/:mazoId" element={<JugarPage />} />
           <Route path="/editar-usuario" element={<div>Editar Usuario</div>} />
           
         </Routes>
