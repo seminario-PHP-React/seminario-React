@@ -270,4 +270,59 @@ body {
   gap: 0.7rem;
   justify-content: center;
   margin-top: 1.2rem;
+}
+
+.mazos-alerta {
+  margin-top: 1.2rem;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+}
+.mazos-alerta.success {
+  background: #d4f7d4;
+  color: #1b7f1b;
+  border: 1px solid #7be07b;
+}
+.mazos-alerta.error {
+  background: #ffe0e0;
+  color: #c0392b;
+  border: 1px solid #ffb3b3;
+}
+
+.mazos-confirmar-eliminar {
+  background: #fffbe7;
+  border: 1px solid #e9dcb6;
+  border-radius: 10px;
+  padding: 0.75rem 0.8rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+.mazos-confirmar-eliminar p {
+  margin-bottom: 1rem;
+  color: #b26a00;
+  font-weight: 500;
+}
+.mazos-confirmar-acciones {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+.mazos-accion-btn.danger {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  font-size:1rem;
+}
+.mazos-accion-btn.danger:hover {
+  background: #c0392b;
 } 
+
+.mazos-modal-acciones .mazos-accion-btn {
+  min-width: 90px;
+  max-width: 140px;
+  width: auto;
+  padding: 0.5rem 0.8rem;
+  font-size: 1rem;
+}

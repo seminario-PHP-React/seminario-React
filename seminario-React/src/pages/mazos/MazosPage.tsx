@@ -10,7 +10,9 @@ const [modalAbierto, setModalAbierto] = useState(false);
 const [mazos, setMazos] = useState<any[]>([]);
 const [cargando, setCargando] = useState(false);
 const [error, setError] = useState<string | null>(null);
+const [alerta, setAlerta] = useState<{ tipo: 'success' | 'error', mensaje: string } | null>(null);
 const [cartasDelMazo, setCartasDelMazo] = useState<any[]>([]);
+const [confirmarEliminar, setConfirmarEliminar] = useState(false);
 
 const obtenerMazos = async () => {
     setCargando(true);
@@ -70,6 +72,32 @@ const obtenerMazos = async () => {
 
   const mazoActivo = mazos.find(m => m.id === mazoSeleccionado);
 
+  const eliminarMazo = async (id: number) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) throw new Error('No hay sesión activa');
+      const res = await fetch(`http://localhost:8000/mazos/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'x-api-key': 'abc123',
+        },
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.Mensaje || data.Error || 'No se pudo eliminar el mazo');
+      setAlerta({ tipo: 'success', mensaje: '¡Mazo eliminado correctamente!' });
+      setTimeout(() => {
+        setModalAbierto(false);
+        setMazoSeleccionado(null);
+        setAlerta(null);
+        setConfirmarEliminar(false);
+        obtenerMazos();
+      }, 1200);
+    } catch (e: any) {
+      setAlerta({ tipo: 'error', mensaje: e.message || 'Error al eliminar el mazo' });
+    }
+  };
+
   return (
     <div className="mazos-page-bg">
       <img src="/assets/images/arcoiris.jpg" alt="Arcoiris" className="mazos-arcoiris-img" />
@@ -101,6 +129,7 @@ const obtenerMazos = async () => {
                     {mazo.nombre}
                   </div>
                 </li>
+
               ))}
             </ul>
             <div className="mazos-acciones">
@@ -131,10 +160,25 @@ const obtenerMazos = async () => {
                 ))}
               </ul>
               <div className="mazos-modal-acciones">
-                <button className="mazos-accion-btn">Editar mazo</button>
-                <button className="mazos-accion-btn">Eliminar mazo</button>
-                <button className="mazos-accion-btn" onClick={() => setModalAbierto(false)}>Cerrar</button>
+                {confirmarEliminar ? (
+                  <div className="mazos-confirmar-eliminar">
+                    <p>¿Estás seguro de que deseas eliminar este mazo?</p>
+                    <div className="mazos-confirmar-acciones">
+                      <button className="mazos-accion-btn danger" onClick={() => eliminarMazo(mazoActivo.id)}>Sí, eliminar</button>
+                      <button className="mazos-accion-btn" onClick={() => setConfirmarEliminar(false)}>Cancelar</button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <button className="mazos-accion-btn">Editar mazo</button>
+                    <button className="mazos-accion-btn" onClick={() => setConfirmarEliminar(true)}>Eliminar mazo</button>
+                    <button className="mazos-accion-btn" onClick={() => { setModalAbierto(false); setAlerta(null); setConfirmarEliminar(false); }}>Cerrar</button>
+                  </>
+                )}
               </div>
+              {alerta && (
+                <div className={`mazos-alerta ${alerta.tipo}`}>{alerta.mensaje}</div>
+              )}
             </div>
           </div>
         )}
