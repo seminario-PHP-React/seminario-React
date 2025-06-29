@@ -13,6 +13,8 @@ const [error, setError] = useState<string | null>(null);
 const [alerta, setAlerta] = useState<{ tipo: 'success' | 'error', mensaje: string } | null>(null);
 const [cartasDelMazo, setCartasDelMazo] = useState<any[]>([]);
 const [confirmarEliminar, setConfirmarEliminar] = useState(false);
+const [editando, setEditando] = useState(false);
+const [nuevoNombre, setNuevoNombre] = useState('');
 
 const obtenerMazos = async () => {
     setCargando(true);
@@ -98,6 +100,32 @@ const obtenerMazos = async () => {
     }
   };
 
+  const editarNombreMazo = async (id: number) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) throw new Error('No hay sesión activa');
+      const res = await fetch(`http://localhost:8000/mazos/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'x-api-key': 'abc123',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ nombre: nuevoNombre }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.Mensaje || data.Error || 'No se pudo editar el mazo');
+      setAlerta({ tipo: 'success', mensaje: '¡Nombre actualizado!' });
+      setEditando(false);
+      setTimeout(() => {
+        setAlerta(null);
+        obtenerMazos();
+      }, 1200);
+    } catch (e: any) {
+      setAlerta({ tipo: 'error', mensaje: e.message || 'Error al editar el mazo' });
+    }
+  };
+
   return (
     <div className="mazos-page-bg">
       <img src="/assets/images/arcoiris.jpg" alt="Arcoiris" className="mazos-arcoiris-img" />
@@ -120,32 +148,38 @@ const obtenerMazos = async () => {
             {cargando && <p>Cargando mazos...</p>}
             {error && <p style={{color: 'red'}}>{error}</p>}
             <ul className="mazos-list">
+              {mazos.length === 0 && !cargando && !error && (
+                <li className="mazos-vacio">Aún no tenés mazos creados.<br/>¡Creá uno nuevo para empezar a jugar!</li>
+              )}
               {mazos.map((mazo) => (
-                <li key={mazo.id}>
+                <li key={mazo.id} className={mazoSeleccionado === mazo.id ? 'seleccionado' : ''}>
                   <div
-                    className={`mazo-nombre ${mazoSeleccionado === mazo.id ? 'seleccionado' : ''}`}
+                    className="mazo-nombre"
                     onClick={() => setMazoSeleccionado(mazo.id)}
                   >
                     {mazo.nombre}
                   </div>
                 </li>
-
               ))}
             </ul>
             <div className="mazos-acciones">
-              <button
-                className="mazos-accion-btn"
-                disabled={!mazoSeleccionado}
-                onClick={() => setModalAbierto(true)}
-              >
-                Ver mazo
-              </button>
-              <button
-                className="mazos-accion-btn"
-                disabled={!mazoSeleccionado}
-              >
-                Jugar
-              </button>
+              {mazos.length > 0 && (
+                <>
+                  <button
+                    className="mazos-accion-btn"
+                    disabled={!mazoSeleccionado}
+                    onClick={() => setModalAbierto(true)}
+                  >
+                    Ver mazo
+                  </button>
+                  <button
+                    className="mazos-accion-btn"
+                    disabled={!mazoSeleccionado}
+                  >
+                    Jugar
+                  </button>
+                </>
+              )}
             </div>
           </>
         )}
@@ -153,7 +187,24 @@ const obtenerMazos = async () => {
         {modalAbierto && mazoActivo && (
           <div className="mazos-modal-bg">
             <div className="mazos-modal">
-              <h3>{mazoActivo.nombre}</h3>
+              <h3>
+                {editando ? (
+                  <form className="mazos-editar-form" onSubmit={e => { e.preventDefault(); editarNombreMazo(mazoActivo.id); }}>
+                    <input
+                      type="text"
+                      value={nuevoNombre}
+                      onChange={e => setNuevoNombre(e.target.value)}
+                      className="mazos-editar-input"
+                      maxLength={30}
+                      required
+                    />
+                    <button type="submit" className="mazos-accion-btn">Guardar</button>
+                    <button type="button" className="mazos-accion-btn cancelar" onClick={() => { setEditando(false); setNuevoNombre(mazoActivo.nombre); }}>Cancelar</button>
+                  </form>
+                ) : (
+                  <span>{mazoActivo.nombre}</span>
+                )}
+              </h3>
               <ul className="mazos-cartas-list">
                 {cartasDelMazo.map((carta: any, i: number) => (
                   <li key={i}>{carta.nombre || JSON.stringify(carta)}</li>
@@ -170,9 +221,9 @@ const obtenerMazos = async () => {
                   </div>
                 ) : (
                   <>
-                    <button className="mazos-accion-btn">Editar mazo</button>
+                    <button className="mazos-accion-btn" onClick={() => { setEditando(true); setNuevoNombre(mazoActivo.nombre); }}>Editar mazo</button>
                     <button className="mazos-accion-btn" onClick={() => setConfirmarEliminar(true)}>Eliminar mazo</button>
-                    <button className="mazos-accion-btn" onClick={() => { setModalAbierto(false); setAlerta(null); setConfirmarEliminar(false); }}>Cerrar</button>
+                    <button className="mazos-accion-btn" onClick={() => { setModalAbierto(false); setAlerta(null); setConfirmarEliminar(false); setEditando(false); }}>Cerrar</button>
                   </>
                 )}
               </div>
