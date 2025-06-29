@@ -5,6 +5,7 @@ import NavBarComponent from './components/NavBarComponent';
 import RegistroPage from './pages/registro/RegistroPage';
 import LoginComponent from './pages/login/LoginComponent';
 import EditarUsuarioPage from './pages/editar/EditarUsuarioPage';
+import MazosPage from './pages/mazos/MazosPage';
 
 
 
@@ -20,7 +21,7 @@ const App: React.FC = () => {
           <Route path="/registro" element={<RegistroPage />} />
           <Route path="/login" element={<LoginComponent />} />
           <Route path="/editar-usuario" element={<EditarUsuarioPage />} />
-          <Route path="/mis-mazos" element={<div>Mis Mazos</div>} />
+          <Route path="/mis-mazos" element={<MazosPage />} />
           <Route path="/editar-usuario" element={<div>Editar Usuario</div>} />
           
         </Routes>
