@@ -143,7 +143,7 @@ const RegistroPage = () => {
       {mensaje && <p className="mensaje-ok">{mensaje}</p>}
 
       <div className="link-group">
-        ¿Ya tenés cuenta? <a href="/">Iniciar sesión</a>
+        ¿Ya tenés cuenta? <a href="/login">Iniciar sesión</a>
       </div>
     </div>
   </div>

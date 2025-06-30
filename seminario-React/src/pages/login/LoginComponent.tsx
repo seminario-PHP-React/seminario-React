@@ -52,6 +52,9 @@ const LoginPage: React.FC = () => {
   return (
     <div className="login-page">
       <div className="login-container">
+        <div style={{ position: 'absolute', top: 30, right: 40 }}>
+          <a href="/registro" className="login-registrarse-btn">Registrarse</a>
+        </div>
         <div className="login-form-side">
           <h2>Iniciar sesión</h2>
           <form onSubmit={handleLogin}>
