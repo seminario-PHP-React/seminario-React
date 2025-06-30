@@ -102,10 +102,6 @@ const RegistroPage = () => {
 
   return (
   <div className="registro-page">
-    <div className="registro-image-side">
-      <img src="/ruta/imagen-pokemon.png" alt="Imagen" />
-    </div>
-
     <div className="registro-container">
       <h2>Registro de Usuario</h2>
 
@@ -147,7 +143,7 @@ const RegistroPage = () => {
       {mensaje && <p className="mensaje-ok">{mensaje}</p>}
 
       <div className="link-group">
-        ¿Ya tenés cuenta? <a href="/login">Iniciar sesión</a>
+        ¿Ya tenés cuenta? <a href="/">Iniciar sesión</a>
       </div>
     </div>
   </div>

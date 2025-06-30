@@ -37,12 +37,58 @@ html, body {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-top: 400px;
+  margin-top: 200px;
 }
 
-.cartas-oponente h3, .cartas-usuario h3 {
-  margin-bottom: 1rem;
-  color: #457b9d;
+.cartas-oponente h3 {
+  margin-bottom: 1.2rem;
+  font-size: 2rem;
+  font-family: 'Segoe UI', 'Montserrat', 'Arial', sans-serif;
+  font-weight: 900;
+  background: linear-gradient(90deg, #3b4cca 0%, #52ce9f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  text-shadow: 0 2px 12px rgba(59,76,202,0.10), 0 1px 0 #fff;
+  letter-spacing: 2px;
+  text-align: center;
+  position: relative;
+  white-space: nowrap;
+}
+
+.cartas-usuario h3 {
+  margin-bottom: 1.2rem;
+  font-size: 2rem;
+  font-family: 'Segoe UI', 'Montserrat', 'Arial', sans-serif;
+  font-weight: 900;
+  background: linear-gradient(90deg, #52ce9f 0%, #3bb4d6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  text-shadow: 0 2px 12px rgba(59,76,202,0.10), 0 1px 0 #2e0b74;
+  letter-spacing: 2px;
+  text-align: center;
+  position: relative;
+  white-space: nowrap;
+}
+
+.cartas-oponente h3::after, .cartas-usuario h3::after {
+  content: '';
+  display: block;
+  margin: 0.4rem auto 0 auto;
+  width: 60%;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #3b4cca 0%, #52ce9f 100%);
+  opacity: 0.7;
+  transition: width 0.3s;
+}
+
+.cartas-oponente h3:hover::after, .cartas-usuario h3:hover::after {
+  width: 90%;
+  opacity: 1;
 }
 
 /* Cartas del oponente (arriba) - boca abajo/ocultas */
