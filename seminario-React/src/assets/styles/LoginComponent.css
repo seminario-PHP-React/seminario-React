@@ -67,7 +67,7 @@ body {
 ------------ Boton de iniciar sesion ------------
 ------------------------------------------------*/
 .input-group {
-  margin-bottom: 4rem; /* mas arriba o mas abajo*/
+  margin-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
@@ -78,11 +78,13 @@ button {
   background-color: #66c27d;
   color: white;
   border: none;
-  padding: 0.75rem 1rem;
-  font-size: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.4rem;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-bottom: 0;
+  margin-top: 0;
 }
 
 /* al posicionarse sobre el botón */
@@ -98,9 +100,8 @@ button:hover {
 ------------------------------------------------*/
 /* No tenes cuenta?*/
 .link-group {
-  margin-top: 5rem;
-  /*margin-bottom: 10px;*/
-  font-size: 1.3rem;
+  margin-top: 1.2rem;
+  font-size: 1.2rem;
   text-align:left;
   color: #666;
 }
@@ -110,6 +111,7 @@ button:hover {
   color: #3b4cca;
   text-decoration: none;
   margin-left: 0.5rem;
+  font-size: 1.2rem;
 }
 
 
@@ -170,4 +172,18 @@ button:hover {
 /*------------------------------------------------
 ------------Ingreso de datos -----------
 ------------------------------------------------*/
+.login-registrarse-btn {
+  background: #1bb15f;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(59,76,202,0.08);
+  transition: background 0.2s;
+}
+.login-registrarse-btn:hover {
+  background: #148c43;
+}
 

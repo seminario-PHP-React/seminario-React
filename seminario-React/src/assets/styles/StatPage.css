@@ -1,0 +1,104 @@
+/* StatPage.css */
+.stat-container {
+  max-width: 700px;
+  margin: 2.5rem auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  padding: 2.5rem 2rem 2rem 2rem;
+}
+.stat-container h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #1d3557;
+  font-size: 2.1rem;
+}
+.stat-orden {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+}
+.stat-orden .stat-toggle {
+  display: flex;
+  background: #f1f1f1;
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.stat-orden .stat-toggle-btn {
+  border: none;
+  background: transparent;
+  color: #457b9d;
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 0.55rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.stat-orden .stat-toggle-btn.activo {
+  background: #1bb15f;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(27,177,95,0.08);
+}
+.stat-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.2rem;
+  font-size: 1.05rem;
+}
+.stat-table th, .stat-table td {
+  padding: 0.7rem 0.5rem;
+  text-align: center;
+}
+.stat-table th {
+  background: #f1f1f1;
+  color: #1d3557;
+  font-weight: 700;
+}
+.stat-table tr {
+  border-bottom: 1px solid #e0e0e0;
+}
+.stat-table tr.mejor {
+  background: #fffbe6;
+  font-weight: 700;
+  color: #b8860b;
+  box-shadow: 0 2px 8px rgba(255,251,230,0.15);
+  border-left: 5px solid #ffe066;
+}
+.stat-paginado {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
+  margin-top: 1.2rem;
+}
+.stat-paginado button {
+  background: #457b9d;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 1.1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.stat-paginado button:disabled {
+  background: #bdbdbd;
+  color: #eee;
+  cursor: not-allowed;
+}
+@media (max-width: 600px) {
+  .stat-container {
+    padding: 1.2rem 0.3rem;
+  }
+  .stat-table th, .stat-table td {
+    padding: 0.4rem 0.2rem;
+    font-size: 0.95rem;
+  }
+  .stat-orden button, .stat-paginado button {
+    font-size: 0.95rem;
+    padding: 0.4rem 0.7rem;
+  }
+} 

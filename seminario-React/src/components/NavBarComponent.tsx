@@ -30,11 +30,23 @@ const NavBarComponent: React.FC = () => {
           </>
         ) : (
           <>
-            {location.pathname === '/' && (
-              <Link to="/registro">Registrarse</Link>
+            {location.pathname === '/login' && (
+              <>
+                <Link to="/estadisticas">Estadísticas</Link>
+                <Link to="/registro">Registrarse</Link>
+              </>
             )}
             {location.pathname === '/registro' && (
-              <Link to="/">Iniciar sesión</Link>
+              <>
+                <Link to="/estadisticas">Estadísticas</Link>
+                <Link to="/login">Iniciar sesión</Link>
+              </>
+            )}
+            {location.pathname !== '/login' && location.pathname !== '/registro' && (
+              <>
+                <Link to="/login">Iniciar sesión</Link>
+                <Link to="/registro">Registrarse</Link>
+              </>
             )}
           </>
         )}
