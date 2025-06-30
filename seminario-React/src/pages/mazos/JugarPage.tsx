@@ -16,6 +16,7 @@ const JugarPage: React.FC = () => {
   const [cartasEnCentro, setCartasEnCentro] = useState<{usuario?: any, servidor?: any} | null>(null);
   const [resultadoRonda, setResultadoRonda] = useState<string | null>(null);
   const [animando, setAnimando] = useState(false);
+  const [cartasServidor, setCartasServidor] = useState<any[]>([]);
 
   // Simulación de cartas del oponente (atributos)
   const cartasOponente = [
@@ -42,7 +43,7 @@ const JugarPage: React.FC = () => {
       const token = localStorage.getItem('token');
       if (!usuarioData || !token) throw new Error('No hay sesión activa');
       const { id } = JSON.parse(usuarioData);
-      // 1. Iniciar partida
+      // Iniciar partida
       const resPartida = await fetch('http://localhost:8000/partidas', {
         method: 'POST',
         headers: {
@@ -55,7 +56,7 @@ const JugarPage: React.FC = () => {
       const dataPartida = await resPartida.json();
       if (!resPartida.ok) throw new Error(dataPartida.Mensaje || 'No se pudo iniciar la partida');
       setPartidaId(dataPartida.partida_id);
-      // 2. Obtener cartas en mano de la partida
+      // Obtener cartas en mano de la partida
       const resCartas = await fetch(`http://localhost:8000/usuarios/${id}/partidas/${dataPartida.partida_id}/cartas`, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -65,6 +66,15 @@ const JugarPage: React.FC = () => {
       const dataCartas = await resCartas.json();
       if (!resCartas.ok) throw new Error(dataCartas.Mensaje || 'No se pudieron obtener las cartas de la partida');
       setCartasUsuario(Array.isArray(dataCartas) ? dataCartas : []);
+      // Obtener cartas del mazo 1 (servidor)
+      const resCartasServidor = await fetch(`http://localhost:8000/mazos/1/cartas`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'x-api-key': 'abc123',
+        },
+      });
+      const dataCartasServidor = await resCartasServidor.json();
+      setCartasServidor(Array.isArray(dataCartasServidor) ? dataCartasServidor : (dataCartasServidor.Cartas || []));
     } catch (e: any) {
       setError(e.message || 'Error desconocido');
     } finally {
@@ -99,11 +109,14 @@ const JugarPage: React.FC = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.Mensaje || 'No se pudo realizar la jugada');
       setJugada(data);
+      // Buscar la carta del servidor en cartasServidor
+      const cartaServidorId = data['Carta del servidor'];
+      const cartaServidor = cartasServidor.find(c => (c.id || c['ID carta'] || c.carta_id) === cartaServidorId) || { id: cartaServidorId, fuerza: data['Fuerza del servidor'] };
       // Mostrar cartas jugadas en el centro
       setCartasEnCentro({
         usuario: carta,
         servidor: {
-          id: data['Carta del servidor'],
+          ...cartaServidor,
           fuerza: data['Fuerza del servidor']
         }
       });
@@ -152,7 +165,7 @@ const JugarPage: React.FC = () => {
 
   return (
     <div className="jugar-container">
-      <h2 className="jugar-titulo">¡Pokebattle!</h2>
+      <h2 className="jugar-titulo"></h2>
       <div className="tablero">
         <div className="cartas-oponente">
           <h3>Cartas del oponente</h3>
@@ -172,14 +185,14 @@ const JugarPage: React.FC = () => {
                 <div className="carta-contenido">
                   <div className="carta-nombre">{cartasEnCentro.usuario['Nombre del pokemon'] || cartasEnCentro.usuario.nombre}</div>
                   <div className="carta-atributo">{cartasEnCentro.usuario.atributo || cartasEnCentro.usuario['atributo'] || cartasEnCentro.usuario['Nombre del ataque'] || cartasEnCentro.usuario['ataque_nombre']}</div>
-                  <div className="carta-ataque">ATK: {cartasEnCentro.usuario.ataque || cartasEnCentro.usuario['ataque'] || cartasEnCentro.usuario['Fuerza'] || ''}</div>
+                  <div className="carta-ataque">ATK: {cartasEnCentro.usuario.ataque || cartasEnCentro.usuario['ataque'] || cartasEnCentro.usuario['Fuerza'] || cartasEnCentro.usuario['Ataque'] || ''}</div>
                 </div>
               </div>
               <div className="carta-centro carta-centro-servidor slide-down">
                 <div className="carta-contenido">
-                  <div className="carta-nombre">Servidor</div>
-                  <div className="carta-atributo">?</div>
-                  <div className="carta-ataque">ATK: {cartasEnCentro.servidor.fuerza}</div>
+                  <div className="carta-nombre">{cartasEnCentro.servidor['Nombre del pokemon'] || cartasEnCentro.servidor.nombre || cartasEnCentro.servidor['Nombre'] || 'Servidor'}</div>
+                  <div className="carta-atributo">{cartasEnCentro.servidor.atributo || cartasEnCentro.servidor['atributo'] || cartasEnCentro.servidor['Atributo'] || cartasEnCentro.servidor['Nombre del ataque'] || cartasEnCentro.servidor['ataque_nombre'] || '?'}</div>
+                  <div className="carta-ataque">ATK: {cartasEnCentro.servidor.fuerza || cartasEnCentro.servidor['Fuerza'] || cartasEnCentro.servidor['Ataque'] || cartasEnCentro.servidor['ataque'] || cartasEnCentro.servidor.ataque || ''}</div>
                 </div>
               </div>
               {resultadoRonda && (
@@ -211,15 +224,18 @@ const JugarPage: React.FC = () => {
           {cargando && <p>Cargando cartas...</p>}
           {error && <p style={{color: 'red'}}>{error}</p>}
           <div style={{ display: 'flex', gap: '10px' }}>
-            {Array.isArray(cartasUsuario) && cartasUsuario.map((carta, index) => (
-              <div key={index} className="carta" onClick={() => handleJugarCarta(carta)} style={{opacity: finalizada || animando ? 0.5 : 1, pointerEvents: finalizada || animando ? 'none' : 'auto'}}>
-                <div className="carta-contenido">
-                  <div className="carta-nombre">{carta['Nombre del pokemon'] || carta.nombre}</div>
-                  <div className="carta-atributo">{carta.atributo || carta['atributo'] || carta['Nombre del ataque'] || carta['ataque_nombre']}</div>
-                  <div className="carta-ataque">ATK: {carta.ataque || carta['ataque'] || carta['Fuerza'] || ''}</div>
+            {Array.isArray(cartasUsuario) && cartasUsuario.map((carta, index) => {
+              console.log('Carta usuario:', carta);
+              return (
+                <div key={index} className="carta" onClick={() => handleJugarCarta(carta)} style={{opacity: finalizada || animando ? 0.5 : 1, pointerEvents: finalizada || animando ? 'none' : 'auto'}}>
+                  <div className="carta-contenido">
+                    <div className="carta-nombre">{carta['Nombre del pokemon'] || carta.nombre}</div>
+                    <div className="carta-atributo">{carta.atributo || carta['atributo'] || carta['Nombre del ataque'] || carta['ataque_nombre']}</div>
+                    <div className="carta-ataque">ATK: {carta.ataque || carta['ataque'] || carta['Fuerza'] || carta['Ataque'] || ''}</div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

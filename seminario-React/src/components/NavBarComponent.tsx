@@ -11,13 +11,13 @@ const NavBarComponent: React.FC = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('nombre');
-    window.location.href = '/login'; 
+    window.location.href = '/'; 
   };
 
   return (
     <nav className="navbar-poke">
       <div className="navbar-logo">
-        <img src="/assets/images/descarga.png" alt="Pokeball" />
+        <img src="/assets/images/logo.jpg" alt="Pokeball" />
         <span className="navbar-title">Pokebattle</span>
       </div>
       <div className="navbar-links">
@@ -30,11 +30,11 @@ const NavBarComponent: React.FC = () => {
           </>
         ) : (
           <>
-            {location.pathname === '/login' && (
+            {location.pathname === '/' && (
               <Link to="/registro">Registrarse</Link>
             )}
             {location.pathname === '/registro' && (
-              <Link to="/login">Iniciar sesión</Link>
+              <Link to="/">Iniciar sesión</Link>
             )}
           </>
         )}
