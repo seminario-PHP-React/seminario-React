@@ -1,5 +1,3 @@
-// src/pages/stat/StatPage.jsx
-// @ts-nocheck
 import React, { useEffect, useState } from 'react';
 import '../../assets/styles/StatPage.css';
 
@@ -22,7 +20,6 @@ const StatPage = () => {
         });
         if (!res.ok) throw new Error('No se pudieron obtener las estadísticas');
         const data = await res.json();
-        // Suponemos que data es un array de usuarios con stats
         setUsuarios(Array.isArray(data) ? data : (data.usuarios || []));
       } catch (e) {
         setError(e.message || 'Error desconocido');
@@ -53,7 +50,7 @@ const StatPage = () => {
     return a.promedio - b.promedio;
   });
 
-  // Paginado
+  // Mostrar en pag
   const totalPaginas = Math.ceil(usuariosOrdenados.length / PAGE_SIZE);
   const usuariosPagina = usuariosOrdenados.slice((pagina - 1) * PAGE_SIZE, pagina * PAGE_SIZE);
   const mejorPromedio = usuariosOrdenados[0]?.promedio;

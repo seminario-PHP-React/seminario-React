@@ -7,7 +7,7 @@ const HeaderComponent = () => {
 
   return (
     <header className="header">
-      <div className="header-content" onClick={() => navigate('/')}>
+      <div className="header-content" style={{cursor: 'pointer'}} onClick={() => navigate('/')}>
         <img src="/logo.png" alt="Logo" className="logo" />
         <h1>Pokebattle</h1>
       </div>

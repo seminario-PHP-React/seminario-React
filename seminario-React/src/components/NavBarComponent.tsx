@@ -16,7 +16,7 @@ const NavBarComponent: React.FC = () => {
 
   return (
     <nav className="navbar-poke">
-      <div className="navbar-logo">
+      <div className="navbar-logo" style={{cursor: 'pointer'}} onClick={() => window.location.href = '/'}>
         <img src="/assets/images/logo.jpg" alt="Pokeball" />
         <span className="navbar-title">Pokebattle</span>
       </div>

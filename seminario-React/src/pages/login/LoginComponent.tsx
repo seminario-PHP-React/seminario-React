@@ -13,8 +13,6 @@ const LoginPage: React.FC = () => {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // VALIDACIONES
-    // PREGUNTAR --> las ponemos nosotras?
     if (!usuario.trim() || !nombre.trim() || !contraseña.trim()) {
       alert('Todos los campos son obligatorios');
       return;
@@ -35,9 +33,9 @@ const LoginPage: React.FC = () => {
       console.log('Respuesta del backend:', data);
       console.log('Payload enviado:', { usuario, nombre, contraseña });
 
-      if (response.ok) {                         // Si esta bien la guardo en el buffer o localstorage del navegador 
+      if (response.ok) {                         // si esta bien la guardo en el buffer o localstorage del navegador 
         const nombreReal = data.Mensaje?.replace('Bienvenido ', '') ?? nombre;
-        saveAuthData(data.Token, data.id, nombreReal, nombre); // Guardar nombre completo
+        saveAuthData(data.Token, data.id, nombreReal, nombre); // guardar nombre completo
         window.location.href = '/mis-mazos';     // al loguearse ya puede ver su info
       } else {
         alert(data.Mensaje || 'Error al iniciar sesión');
