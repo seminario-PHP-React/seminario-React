@@ -290,7 +290,7 @@ useEffect(() => {
             <input
               type="text"
               maxLength={20}
-              placeholder="Nombre del mazo (máx 20)"
+              placeholder="Nombre del mazo"
               value={nombreNuevoMazo}
               onChange={e => setNombreNuevoMazo(e.target.value)}
               className="mazos-crear-input"
