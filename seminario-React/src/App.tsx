@@ -7,9 +7,8 @@ import LoginComponent from './pages/login/LoginComponent';
 import EditarUsuarioPage from './pages/editar/EditarUsuarioPage';
 import MazosPage from './pages/mazos/MazosPage';
 import JugarPage from './pages/mazos/JugarPage';
-import StatPage from './pages/stat/StatPage';
-
-
+import StatPage from './pages/stat/StatPage.jsx';
+import FooterComponent from './components/FooterComponent.jsx';
 
 const App: React.FC = () => {
   return (
@@ -27,6 +26,9 @@ const App: React.FC = () => {
           <Route path="/mis-mazos" element={<MazosPage />} />
           <Route path="/jugar/:mazoId" element={<JugarPage />} />
         </Routes>
+
+        <FooterComponent />
+
       </div>
     </Router>
   );
