@@ -1,7 +1,6 @@
-export const saveAuthData = (token: string, id:number, userName: string, nombreCompleto: string): void => {
+export const saveAuthData = (token: string, id:number, userName: string): void => {
   localStorage.setItem('token', token);
   localStorage.setItem('userName', userName);
-  localStorage.setItem('nombre', nombreCompleto);
   localStorage.setItem('usuario', JSON.stringify({ token, id }));
 };
 
@@ -17,4 +16,10 @@ export const getUserName = () => {
 export const clearAuthData = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('userName');
+  localStorage.removeItem('usuario');
+};
+
+// Función para limpiar TODO el localStorage
+export const clearAllLocalStorage = () => {
+  localStorage.clear();
 };

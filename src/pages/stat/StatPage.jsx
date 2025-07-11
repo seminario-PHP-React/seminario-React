@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { buildApiUrl, getAuthHeaders } from '../../config/api';
 import '../../assets/styles/StatPage.css';
-
-const PAGE_SIZE = 5;
 
 const StatPage = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [orden, setOrden] = useState('mejor'); // 'mejor' o 'peor'
-  const [pagina, setPagina] = useState(1);
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
 
@@ -15,8 +13,8 @@ const StatPage = () => {
       setCargando(true);
       setError(null);
       try {
-        const res = await fetch('http://localhost:8000/estadisticas', {
-          headers: { 'x-api-key': 'abc123' }
+        const res = await fetch('/estadisticas', {
+          headers: getAuthHeaders()
         });
         if (!res.ok) throw new Error('No se pudieron obtener las estadísticas');
         const data = await res.json();
@@ -50,9 +48,6 @@ const StatPage = () => {
     return a.promedio - b.promedio;
   });
 
-  // Mostrar en pag
-  const totalPaginas = Math.ceil(usuariosOrdenados.length / PAGE_SIZE);
-  const usuariosPagina = usuariosOrdenados.slice((pagina - 1) * PAGE_SIZE, pagina * PAGE_SIZE);
   const mejorPromedio = usuariosOrdenados[0]?.promedio;
 
   return (
@@ -61,16 +56,23 @@ const StatPage = () => {
       <div className="stat-orden">
         <button
           className={orden === 'mejor' ? 'activo' : ''}
-          onClick={() => { setOrden('mejor'); setPagina(1); }}
+          onClick={() => setOrden('mejor')}
         >Mejor performance</button>
         <button
           className={orden === 'peor' ? 'activo' : ''}
-          onClick={() => { setOrden('peor'); setPagina(1); }}
+          onClick={() => setOrden('peor')}
         >Peor performance</button>
       </div>
       {cargando && <p>Cargando estadísticas...</p>}
       {error && <p style={{color:'red'}}>{error}</p>}
-      <table className="stat-table">
+      {!cargando && !error && usuariosOrdenados.length === 0 && (
+        <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
+          <h3>No hay estadísticas disponibles</h3>
+          <p>¡Sé el primero en jugar y aparecerás aquí!</p>
+        </div>
+      )}
+      {!cargando && !error && usuariosOrdenados.length > 0 && (
+        <table className="stat-table">
         <thead>
           <tr>
             <th>Nombre</th>
@@ -82,9 +84,9 @@ const StatPage = () => {
           </tr>
         </thead>
         <tbody>
-          {usuariosPagina.map((u, i) => (
+          {usuariosOrdenados.map((u, i) => (
             <tr key={u.Nombre}
-                className={u.promedio === mejorPromedio && orden === 'mejor' && pagina === 1 && i === 0 ? 'mejor' : ''}>
+                className={u.promedio === mejorPromedio && orden === 'mejor' && i === 0 ? 'mejor' : ''}>
               <td>{u.Nombre}</td>
               <td>{u.jugadas}</td>
               <td>{u.ganadas}</td>
@@ -94,12 +96,8 @@ const StatPage = () => {
             </tr>
           ))}
         </tbody>
-      </table>
-      <div className="stat-paginado">
-        <button onClick={() => setPagina(p => Math.max(1, p - 1))} disabled={pagina === 1}>Anterior</button>
-        <span>Página {pagina} de {totalPaginas}</span>
-        <button onClick={() => setPagina(p => Math.min(totalPaginas, p + 1))} disabled={pagina === totalPaginas}>Siguiente</button>
-      </div>
+        </table>
+      )}
     </div>
   );
 };

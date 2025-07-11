@@ -1,47 +1,45 @@
 import React, { useState } from 'react';
 import { saveAuthData } from '../../utils/auth';
+import { API_CONFIG } from '../../config/api';
 import '../../assets/styles/LoginComponent.css';
 
 const LoginPage: React.FC = () => {
     
   // Lo que espera el LoginController
   const [usuario, setUsuario] = useState<string>('');
-  const [nombre, setNombre] = useState<string>('');
   const [contraseña, setContraseña] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!usuario.trim() || !nombre.trim() || !contraseña.trim()) {
-      alert('Todos los campos son obligatorios');
-      return;
-    }
+    setError(null);
 
     setLoading(true);
 
     try {
-      console.log(JSON.stringify({ usuario, nombre, contraseña }));
-      const response = await fetch('http://localhost:8000/login', { // llamo al back
+      console.log(JSON.stringify({ "usuario":usuario, "contraseña":contraseña }));
+      const response = await fetch('/login', { // usar proxy de Vite
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ usuario, nombre, contraseña })
+        body: JSON.stringify({ "usuario":usuario, "contraseña":contraseña })
       });
 
       // espero rta del back
       const data = await response.json();
       console.log('Respuesta del backend:', data);
-      console.log('Payload enviado:', { usuario, nombre, contraseña });
+      console.log('Payload enviado:', { usuario, contraseña });
 
       if (response.ok) {                         // si esta bien la guardo en el buffer o localstorage del navegador 
-        const nombreReal = data.Mensaje?.replace('Bienvenido ', '') ?? nombre;
-        saveAuthData(data.Token, data.id, nombreReal, nombre); // guardar nombre completo
+        const nombreReal = data.Mensaje?.replace('Bienvenido ', '');
+        saveAuthData(data.Token, data.id, nombreReal); // guardar nombre completo
         window.location.href = '/mis-mazos';     // al loguearse ya puede ver su info
       } else {
-        alert(data.Mensaje || 'Error al iniciar sesión');
+        setError(data.Mensaje || 'Error al iniciar sesión');
       }  
-    } catch {
-        alert('Error de conexión con el servidor');
+    } catch (error) {
+        setError('Error de conexión con el servidor');
     } finally {
        setLoading(false);
      }
@@ -50,7 +48,7 @@ const LoginPage: React.FC = () => {
   return (
     <div className="login-page">
       <div className="login-container">
-        <div style={{ position: 'absolute', top: 30, right: 40 }}>
+        <div className="absolute-top-right">
           <a href="/registro" className="login-registrarse-btn">Registrarse</a>
         </div>
         <div className="login-form-side">
@@ -65,13 +63,6 @@ const LoginPage: React.FC = () => {
                 required
               />
               <input
-                type="text"
-                placeholder="Nombre completo"
-                value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
-                required
-              />
-              <input
                 type="password"
                 placeholder="Contraseña"
                 value={contraseña}
@@ -79,7 +70,14 @@ const LoginPage: React.FC = () => {
                 required
               />
             </div>
-            <button type="submit">Iniciar sesión</button>
+            <button type="submit" disabled={loading}>
+              {loading ? 'Iniciando sesión...' : 'Iniciar sesión'}
+            </button>
+            {error && (
+              <div style={{ color: 'red', marginTop: '10px', textAlign: 'center' }}>
+                {error}
+              </div>
+            )}
             <div className="link-group">
               ¿No tenés cuenta? <a href="/registro">Registrate</a>
             </div>

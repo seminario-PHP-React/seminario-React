@@ -1,6 +1,6 @@
 // src/components/HeaderComponent.jsx
 import { useNavigate } from 'react-router-dom';
-import '../assets/styles/HeaderComponent.css';
+import './assets/styles/HeaderComponent.css';
 
 const HeaderComponent = () => {
   const navigate = useNavigate();

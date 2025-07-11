@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { buildApiUrl, getAuthHeaders } from '../../config/api';
 import '../../assets/styles/MazosPage.css';
 
 const MazosPage: React.FC = () => {
@@ -32,11 +33,8 @@ const obtenerMazos = async () => {
       const token = localStorage.getItem('token');
       if (!usuarioData || !token) throw new Error('No hay sesión activa');
       const { id } = JSON.parse(usuarioData);
-      const res = await fetch(`http://localhost:8000/usuarios/${id}/mazos`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'x-api-key': 'abc123',
-        },
+      const res = await fetch(`/usuarios/${id}/mazos`, {
+        headers: getAuthHeaders(token),
       });
       if (!res.ok) throw new Error('No se pudieron obtener los mazos');
       const data = await res.json();
@@ -55,11 +53,8 @@ const obtenerMazos = async () => {
       try {
         const token = localStorage.getItem('token');
         if (!token) throw new Error('No hay token');
-        const res = await fetch(`http://localhost:8000/mazos/${mazoSeleccionado}/cartas`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'x-api-key': 'abc123',
-          },
+        const res = await fetch(`/mazos/${mazoSeleccionado}/cartas`, {
+          headers: getAuthHeaders(token),
         });
         if (!res.ok) throw new Error('Error al obtener cartas');
         const data = await res.json();
@@ -80,8 +75,8 @@ useEffect(() => {
       try {
         const token = localStorage.getItem('token');
         if (!token) throw new Error('No hay sesión activa');
-        const res = await fetch('http://localhost:8000/cartas', {
-          headers: { 'Authorization': `Bearer ${token}`, 'x-api-key': 'abc123' }
+        const res = await fetch('/cartas', {
+          headers: getAuthHeaders(token)
         });
         const data = await res.json();
         setCartasDisponibles(Array.isArray(data.Cartas) ? data.Cartas : []);
@@ -105,12 +100,9 @@ useEffect(() => {
     try {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No hay sesión activa');
-      const res = await fetch(`http://localhost:8000/mazos/${id}`, {
+      const res = await fetch(`/mazos/${id}`, {
         method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'x-api-key': 'abc123',
-        },
+        headers: getAuthHeaders(token),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.Mensaje || data.Error || 'No se pudo eliminar el mazo');
@@ -131,13 +123,9 @@ useEffect(() => {
     try {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No hay sesión activa');
-      const res = await fetch(`http://localhost:8000/mazos/${id}`, {
+      const res = await fetch(`/mazos/${id}`, {
         method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'x-api-key': 'abc123',
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(token),
         body: JSON.stringify({ nombre: nuevoNombre }),
       });
       const data = await res.json();
@@ -180,13 +168,9 @@ useEffect(() => {
       const usuarioData = localStorage.getItem('usuario');
       if (!token || !usuarioData) throw new Error('No hay sesión activa');
       const { id } = JSON.parse(usuarioData);
-      const res = await fetch('http://localhost:8000/mazos', {
+      const res = await fetch('/mazos', {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'x-api-key': 'abc123',
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(token),
         body: JSON.stringify({
           nombre: nombreNuevoMazo,
           usuario_id: id,

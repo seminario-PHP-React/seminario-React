@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { buildApiUrl, getAuthHeaders } from '../../config/api';
 import "../../assets/styles/EditarUsuarioPage.css";
 
 const EditarUsuarioPage = () => {
@@ -18,9 +19,8 @@ const EditarUsuarioPage = () => {
     if (!usuarioData) return;
 
     const { id, token } = JSON.parse(usuarioData);
-    axios.get(`http://localhost:8000/usuarios/${id}`, {
-      headers: { Authorization: `Bearer ${token}`,
-      'x-api-key':'abc123' }
+    axios.get(buildApiUrl(`/usuarios/${id}`), {
+      headers: getAuthHeaders(token)
     })
       .then(res => {
         setNombre(res.data.Nombre || '');
@@ -93,11 +93,8 @@ const EditarUsuarioPage = () => {
       if (mostrarPassword && password) {
         payload.contraseña = password;
       }
-      await axios.put(`http://localhost:8000/usuarios/${id}`, payload, {
-        headers: { Authorization: `Bearer ${token}`, 
-        'Content-Type': 'application/json',
-        'x-api-key': 'abc123'
-      }
+      await axios.put(buildApiUrl(`/usuarios/${id}`), payload, {
+        headers: getAuthHeaders(token)
       });
 
       setMensaje("Usuario actualizado correctamente.");

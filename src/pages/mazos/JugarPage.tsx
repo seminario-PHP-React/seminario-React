@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { buildApiUrl, getAuthHeaders } from '../../config/api';
 import "../../assets/styles/JugarPage.css";
 
 const JugarPage: React.FC = () => {
@@ -19,11 +20,51 @@ const JugarPage: React.FC = () => {
 
   // Simulación de cartas del oponente (atributos)
   const cartasOponente = [
-    { atributo: 'Eléctrico' },
-    { atributo: 'Fuego' },
-    { atributo: 'Agua' },
-    { atributo: 'Planta' },
-    { atributo: 'Psíquico' }
+    { 
+      id: 1,
+      nombre: 'Charizard',
+      ataque: 84,
+      ataque_nombre: 'Lanzallamas',
+      imagen: null,
+      atributo_id: 1,
+      atributo: 'Fuego'
+    },
+    { 
+      id: 2,
+      nombre: 'Blastoise',
+      ataque: 83,
+      ataque_nombre: 'Hidrobomba',
+      imagen: null,
+      atributo_id: 2,
+      atributo: 'Agua'
+    },
+    { 
+      id: 3,
+      nombre: 'Arcanine',
+      ataque: 110,
+      ataque_nombre: 'Colmillo Ígneo',
+      imagen: null,
+      atributo_id: 1,
+      atributo: 'Fuego'
+    },
+    { 
+      id: 4,
+      nombre: 'Golem',
+      ataque: 120,
+      ataque_nombre: 'Avalancha',
+      imagen: null,
+      atributo_id: 6,
+      atributo: 'Tierra'
+    },
+    { 
+      id: 5,
+      nombre: 'Pidgeot',
+      ataque: 80,
+      ataque_nombre: 'Tornado',
+      imagen: null,
+      atributo_id: 5,
+      atributo: 'Viento'
+    }
   ];
 
   // Función para iniciar/reiniciar partida
@@ -43,24 +84,17 @@ const JugarPage: React.FC = () => {
       if (!usuarioData || !token) throw new Error('No hay sesión activa');
       const { id } = JSON.parse(usuarioData);
       // 1. Iniciar partida
-      const resPartida = await fetch('http://localhost:8000/partidas', {
+      const resPartida = await fetch('/partidas', {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'x-api-key': 'abc123',
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(token),
         body: JSON.stringify({ mazo: Number(mazoId) })
       });
       const dataPartida = await resPartida.json();
       if (!resPartida.ok) throw new Error(dataPartida.Mensaje || 'No se pudo iniciar la partida');
       setPartidaId(dataPartida.partida_id);
       // 2. Obtener cartas en mano de la partida
-      const resCartas = await fetch(`http://localhost:8000/usuarios/${id}/partidas/${dataPartida.partida_id}/cartas`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'x-api-key': 'abc123',
-        },
+      const resCartas = await fetch(`/usuarios/${id}/partidas/${dataPartida.partida_id}/cartas`, {
+        headers: getAuthHeaders(token),
       });
       const dataCartas = await resCartas.json();
       if (!resCartas.ok) throw new Error(dataCartas.Mensaje || 'No se pudieron obtener las cartas de la partida');
@@ -87,13 +121,9 @@ const JugarPage: React.FC = () => {
       if (!token) throw new Error('No hay sesión activa');
       // El id de la carta puede venir como 'ID carta' o 'carta_id'
       const cartaId = carta['ID carta'] || carta['carta_id'] || carta.id;
-      const res = await fetch('http://localhost:8000/jugadas', {
+      const res = await fetch('/jugadas', {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'x-api-key': 'abc123',
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(token),
         body: JSON.stringify({ partida_id: partidaId, carta_id: cartaId })
       });
       const data = await res.json();
@@ -111,11 +141,8 @@ const JugarPage: React.FC = () => {
       // Actualizar cartas en mano
       const usuarioData = localStorage.getItem('usuario');
       const { id } = usuarioData ? JSON.parse(usuarioData) : {};
-      const resCartas = await fetch(`http://localhost:8000/usuarios/${id}/partidas/${partidaId}/cartas`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'x-api-key': 'abc123',
-        },
+      const resCartas = await fetch(`/usuarios/${id}/partidas/${partidaId}/cartas`, {
+        headers: getAuthHeaders(token),
       });
       const dataCartas = await resCartas.json();
       setCartasUsuario(Array.isArray(dataCartas) ? dataCartas : []);
@@ -178,7 +205,7 @@ const JugarPage: React.FC = () => {
               <div className="carta-centro carta-centro-servidor slide-down">
                 <div className="carta-contenido">
                   <div className="carta-nombre">Servidor</div>
-                  <div className="carta-atributo">?</div>
+                  <div className="carta-atributo">{cartasEnCentro.servidor.nombre}</div>
                   <div className="carta-ataque">ATK: {cartasEnCentro.servidor.fuerza}</div>
                 </div>
               </div>
