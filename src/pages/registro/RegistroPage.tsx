@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import "../../assets/styles/RegistroPage.css";
 
@@ -80,7 +81,7 @@ const RegistroPage = () => {
       {mensaje && <p className="mensaje-ok">{mensaje}</p>}
 
       <div className="link-group">
-        ¿Ya tenés cuenta? <a href="/login">Iniciar sesión</a>
+        ¿Ya tenés cuenta? <Link to="/login">Iniciar sesión</Link>
       </div>
     </div>
   </div>

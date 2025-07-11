@@ -1,16 +1,77 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import '../assets/styles/NavBarComponent.css';
 
 const NavBarComponent: React.FC = () => {
-  const token = localStorage.getItem('token');
-  const nombre = localStorage.getItem('nombre');
-  const logueado = !!token;
+  const [logueado, setLogueado] = useState(false);
+  const [nombre, setNombre] = useState('');
   const location = useLocation();
+
+  // Verificar si el token es válido
+  const verificarToken = async (token: string) => {
+    try {
+      const response = await fetch('/usuarios/verificar-token', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        // Token expirado o inválido
+        localStorage.removeItem('token');
+        localStorage.removeItem('nombre');
+        localStorage.removeItem('usuario');
+        setLogueado(false);
+        setNombre('');
+        return false;
+      }
+      
+      return true;
+    } catch (error) {
+      // Error de conexión, asumimos que el token es válido por ahora
+      return true;
+    }
+  };
+
+  // Verificar estado de autenticación
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const nombreUsuario = localStorage.getItem('nombre');
+    
+    if (token && nombreUsuario) {
+      // Verificar token en el backend
+      verificarToken(token).then((esValido) => {
+        if (esValido) {
+          setLogueado(true);
+          setNombre(nombreUsuario);
+        }
+      });
+    } else {
+      setLogueado(false);
+      setNombre('');
+    }
+  }, []);
+
+  // Verificar token cada 5 minutos
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        verificarToken(token);
+      }
+    }, 5 * 60 * 1000); // 5 minutos
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('nombre');
+    localStorage.removeItem('usuario');
+    setLogueado(false);
+    setNombre('');
     window.location.href = '/'; 
   };
 

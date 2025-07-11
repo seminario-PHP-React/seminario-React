@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { saveAuthData } from '../../utils/auth';
 import { API_CONFIG } from '../../config/api';
 import '../../assets/styles/LoginComponent.css';
@@ -49,7 +50,7 @@ const LoginPage: React.FC = () => {
     <div className="login-page">
       <div className="login-container">
         <div className="absolute-top-right">
-          <a href="/registro" className="login-registrarse-btn">Registrarse</a>
+          <Link to="/registro" className="login-registrarse-btn">Registrarse</Link>
         </div>
         <div className="login-form-side">
           <h2>Iniciar sesión</h2>
@@ -79,7 +80,7 @@ const LoginPage: React.FC = () => {
               </div>
             )}
             <div className="link-group">
-              ¿No tenés cuenta? <a href="/registro">Registrate</a>
+              ¿No tenés cuenta? <Link to="/registro">Registrate</Link>
             </div>
           </form>
         </div>
